@@ -1,0 +1,15 @@
+"effect" "problem1" "problem2" "problem3" "problem4" "problem5" "problem6" "problem7"
+"1" "Allais paradox" "1" "2" NA NA NA NA NA
+"2" "Reflection effect" "3" "4" "5" "1" NA NA NA
+"3" "Weighting of rare events" "6" "7" "8" "9" "10" "11" NA
+"4" "Loss Aversion" "12" "13" "14" "15" "16" "17" "18"
+"5" "St. Petersburg paradox" "19" "20" NA NA NA NA NA
+"6" "Ambiguity aversion" "21" "22" "23" NA NA NA NA
+"7" "Break-even Effect" "24" "6" "3" "5" NA NA NA
+"8" "Get-something effect" "25" "9" "10" "4" NA NA NA
+"9" "Splitting effect" "26" "27" NA NA NA NA NA
+"10" "Payoff variability effect" "28" "29" NA NA NA NA NA
+"11" "Correlation effect" "30" "28" NA NA NA NA NA
+"12" "Certainty effect" "1" "2" NA NA NA NA NA
+"13" "Reversed reflection effect" "3" "4" "5" NA NA NA NA
+"14" "Magnitude effect" "12" "14" NA NA NA NA NA
