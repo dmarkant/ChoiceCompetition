@@ -12,20 +12,14 @@ DIR = '/Users/wulff/Dropbox/PhD/Projects/Side topics/14 Technion Competition/'
 # get Data
 # - - - - - - - - - - - -
 
-d <- read.table(paste0(DIR,'2 Data/RawDataExperiment1.csv'),sep=',',header=T)
+d <- read.table(paste0(DIR,'2 Data/RawDataExperiment1sorted.csv'),sep=',',header=T)
+d$SubjID[d$Location == 'Rehovot'] <- d$SubjID[d$Location == 'Rehovot'] + 1000
+d <- d[order(d$SubjID,d$GameID,d$Trial),]
 
 paperProbs <- read.table(paste0(DIR,'2.1 partitionedData/problemsExp1fromPaper.txt'))
-paperProbsIDs <- apply(paperProbs,1,function(x) paste0(x[2:7],collapse='_'))
 
-sel          <- c('Ha','pHa','La','Hb','pHb','Lb')
-dataProbsIDs <- apply(d,1,function(x) paste0(x[sel],collapse='_'))
-mean(paperProbsIDs%in%dataProbsIDs);mean(dataProbsIDs%in%paperProbsIDs)
+d <- data.frame(d)
 
-for(id in paperProbsIDs){
-  dataProbsIDs[dataProbsIDs==id] <-  rownames(paperProbs)[which(id==paperProbsIDs)]   
-  }
-
-d <- data.frame(d,'problem'=dataProbsIDs)
 
 ## Variables
 # 
@@ -119,13 +113,12 @@ names(purposeProblems)    = c('effect',paste0('problem',1:7))
 
 ## Problems (and comparison between paper and data)
 
-prob      <- c('problem','GameID','Ha','pHa','La','Hb','pHb','Lb','LotNum','LotShape','Corr','Amb')
-problems  <- data.frame(d[!duplicated(d$problem),prob])
-names(problems)[2] <- 'problemInData' ; problems[,1] <- as.numeric(problems[,1])
-problems  <- problems[order(problems$problem),]
-rownames(problems) <- NULL
+prob      <- c('GameID','Ha','pHa','La','Hb','pHb','Lb','LotNum','LotShape','Corr','Amb')
+problems  <- data.frame(d[!duplicated(d$GameID),prob])
+problems  <- problems[order(problems$GameID),]
+rownames(problems) <- NULL ; names(problems)[1] <- 'problem'
 
-dataPs  <- problems[,-2]
+dataPs  <- problems
 paperPs <- paperProbs[,paste0('V',1:11)] 
 names(paperPs) <- names(dataPs) 
 paperPs[,'LotShape'] <- substr(paperPs[,'LotShape'],1,1)
@@ -146,62 +139,90 @@ write.table(purposeProblems,paste0(DIR,'2.1 partitionedData/purposeProblemExp1.t
 
 ## standard 2-outcome Problems
 
-standardData <- subset(d,Manipulation == 'Abstract' & LotNum == 1 & Corr == 0 & Amb == 0)
+sel <- d$Manipulation == 'Abstract' & d$LotNum == 1 & d$Corr == 0 & d$Amb == 0
 
-nam                 <- c('SubjID','problem','Trial','Risk','Condition')
-standardData        <- standardData[,nam]
-names(standardData) <- c('subject','problem','trial','choice','condition')
-for(i in 1:ncol(standardData)) {
-  if(sum(letters %in% strsplit(as.character(standardData[1,i]),'')[[1]]) == 0) standardData[,i] <- as.numeric(standardData[,i])
+stData <- subset(d,sel)
+nam           <- c('SubjID','GameID','Trial','Risk','Condition')
+stData        <- stData[,nam]
+names(stData) <- c('subject','problem','trial','choice','condition')
+
+for(i in 1:ncol(stData)) {
+  if(sum(letters %in% strsplit(as.character(stData[1,i]),'')[[1]]) == 0) stData[,i] <- as.numeric(stData[,i])
   }
-standardData        <- merge(standardData,problems[,c(1,3:8)],by='problem') 
+stData        <- merge(stData,problems[,c(1,3:8)],by='problem') 
 
+stData        <- stData[order(stData$subject,stData$problem,stData$trial),]
+mean(stData$choice == d[sel,'Risk'])
 
 
 ## special Problems
 
-specialData  <- subset(d,!(Manipulation == 'Abstract' & LotNum == 1 & Corr == 0 & Amb == 0))
+spData  <- subset(d,!sel)
 
-specialProb <- specialData$problem
-specialProb[specialProb=='12'] <- 'acceptReject'
-specialProb[specialProb=='13'] <- 'acceptReject'
-specialProb[specialProb=='20'] <- 'StPetersburg - Abstract'
-specialProb[specialProb=='19'] <- 'StPetersburg - CoinToss'
-specialProb[specialProb=='30'] <- 'posCorrelation'
-specialProb[specialProb=='28'] <- 'negCorrelation'
-specialProb[specialProb=='16'] <- 'threeOutcome'
+spProb <- spData$GameID
+spProb[spProb=='12'] <- 'acceptReject'
+spProb[spProb=='13'] <- 'acceptReject'
+spProb[spProb=='20'] <- 'StPetersburg - Abstract'
+spProb[spProb=='19'] <- 'StPetersburg - CoinToss'
+spProb[spProb=='30'] <- 'posCorrelation'
+spProb[spProb=='28'] <- 'negCorrelation'
+spProb[spProb=='16'] <- 'threeOutcome'
 
 
-nam                 <- c('SubjID','problem','Trial','Risk','Condition')
-specialData         <- data.frame(specialData[,nam],'type'=specialProb)
-names(specialData)  <- c('subject','problem','trial','choice','condition')
-for(i in 1:ncol(specialData)) {
-  if(sum(letters %in% strsplit(as.character(specialData[1,i]),'')[[1]]) == 0) specialData[,i] <- as.numeric(specialData[,i])
+nam           <- c('SubjID','GameID','Trial','Risk','Condition')
+spData        <- data.frame(spData[,nam],'type'=spProb)
+names(spData) <- c('subject','problem','trial','choice','condition','task')
+for(i in 1:ncol(spData)) {
+  if(sum(letters %in% strsplit(as.character(spData[1,i]),'')[[1]]) == 0) spData[,i] <- as.numeric(spData[,i])
   }
 
-specialData         <- merge(specialData,problems[,-2])
+spData         <- merge(spData,problems[,-2],by='problem')
 
 
 write.table(standardData,paste0(DIR,'2.1 partitionedData/stDataExp1.txt'))
 write.table(specialData,paste0(DIR,'2.1 partitionedData/spDataExp1.txt'))
 
 
-
 # - - - - - - - - - - - -
 # checkData
 # - - - - - - - - - - - -
 
+
 results <- data.frame(1:30,paperProbs[,paste0('V',12:16)])
 names(results) <- c('problem',paste0('block',1:5))
 
-combData <- rbind(standardData[,1:5],specialData[,1:5])
+combData <- rbind(stData[,1:5],spData[,1:5])
+combData <- combData[order(combData$subject,combData$problem,combData$trial),][,c(2,1,3:5)]
+d.ord    <- d[order(d$SubjID,d$GameID,d$Trial),]
+
+mean(combData$subject == d.ord$SubjID)
+mean(combData$problem == d.ord$GameID)
+mean(combData$choice == d.ord$Risk)
+
 
 res <- dlply(combData,.(problem),function(x) round(tapply(x$choice,ceiling(x$trial/5),mean),2))
 res <- do.call(rbind,res)
 
+res.d <- dlply(d,.(GameID),function(x) round(tapply(x$Risk,ceiling(x$Trial/5),mean),2))
+res.d <- do.call(rbind,res.d)
 
-write.table(paste0(DIR,'2.1 partitionedData/stDataExp1.txt'))
 
+diffs1 <- res-results[,-1]
+diffs2 <- res.d-results[,-1]
+colMeans(diffs1);colMeans(diffs2)
+
+
+# - - - - - - - - - - - -
+# check ByProb vs FB
+# - - - - - - - - - - - -
+
+resByProb <- dlply(subset(combData,condition=='ByProb'),.(problem),function(x) round(tapply(x$choice,ceiling(x$trial/5),mean),2))
+resByProb <- do.call(rbind,resByProb)
+
+resByFB <- dlply(subset(combData,condition=='ByFB'),.(problem),function(x) round(tapply(x$choice,ceiling(x$trial/5),mean),2))
+resByFB <- do.call(rbind,resByFB)
+
+resByProb - resByFB
 
 
 
