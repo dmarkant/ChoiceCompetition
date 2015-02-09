@@ -179,8 +179,11 @@ for(i in 1:ncol(spData)) {
 spData         <- merge(spData,problems[,-2],by='problem')
 
 
-write.table(standardData,paste0(DIR,'2.1 partitionedData/stDataExp1.txt'))
-write.table(specialData,paste0(DIR,'2.1 partitionedData/spDataExp1.txt'))
+stData <- stData[,c(2,1,3:ncol(stData))]
+spData <- spData[,c(2,1,3:ncol(stData))]
+
+write.table(stData,paste0(DIR,'2.1 partitionedData/stDataExp1.txt'))
+write.table(spData,paste0(DIR,'2.1 partitionedData/spDataExp1.txt'))
 
 
 # - - - - - - - - - - - -
