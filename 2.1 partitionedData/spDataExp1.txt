@@ -1,1 +1,1 @@
-"problem" "subject" "trial" "choice" "condition" "task" "NA" "NA" "NA" "NA" "NA" "NA" "NA" "NA" "NA" "NA" "NA" "NA" "NA" "NA" "NA" "NA" "NA" "NA" "NA" "NA" "pHa" "La" "Hb" "pHb" "Lb" "LotNum" "LotShape" "Corr" "Amb"
+"subject" "problem" "trial" "choice" "condition" "task" "NA" "NA.1" "NA.2" "NA.3" "NA.4" "pHa" "La" "Hb" "pHb" "Lb" "LotNum"
