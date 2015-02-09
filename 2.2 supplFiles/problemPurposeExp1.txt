@@ -1,0 +1,31 @@
+"problem" "problem1" "problem2" "problem3"
+"1" "1" "Allais paradox" "Certainty effect" "Reflection effect"
+"2" "2" "Allais paradox" "Certainty effect" NA
+"3" "3" "Reflection effect" "Reversed reflection effect" "Break-even Effect"
+"4" "4" "Reflection effect" "Reversed reflection effect" "Get-something effect"
+"5" "5" "Reflection effect" "Reversed reflection effect" "Break-even Effect"
+"6" "6" "Weighting of rare events" "Break-even Effect" NA
+"7" "7" "Weighting of rare events" NA NA
+"8" "8" "Weighting of rare events" NA NA
+"9" "9" "Weighting of rare events" "Get-something effect" NA
+"10" "10" "Weighting of rare events" "Get-something effect" NA
+"11" "11" "Weighting of rare events" NA NA
+"12" "12" "Loss Aversion" "Magnitude effect" NA
+"13" "13" "Loss Aversion" NA NA
+"14" "14" "Loss Aversion" "Magnitude effect" NA
+"15" "15" "Loss Aversion" NA NA
+"16" "16" "Loss Aversion" NA NA
+"17" "17" "Loss Aversion" NA NA
+"18" "18" "Loss Aversion" NA NA
+"19" "19" "St. Petersburg paradox" NA NA
+"20" "20" "St. Petersburg paradox" NA NA
+"21" "21" "Ambiguity aversion" NA NA
+"22" "22" "Ambiguity aversion" NA NA
+"23" "23" "Ambiguity aversion" NA NA
+"24" "24" "Break-even Effect" NA NA
+"25" "25" "Get-something effect" NA NA
+"26" "26" "Splitting effect" NA NA
+"27" "27" "Splitting effect" NA NA
+"28" "28" "Payoff variability effect" "Correlation effect" NA
+"29" "29" "Payoff variability effect" NA NA
+"30" "30" "Correlation effect" NA NA
